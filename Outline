@@ -1,0 +1,18 @@
+Key (required), artist(optional),song(optional),number of songs(optional), album(optional), genres(optional)
+(grabs a single song)
+1\r\n artist: \r\n song: \r\n\r\n
+(grabs n number of songs specified by client)
+2\r\n numberOfSongs: \r\n artist: \r\n song: \r\n.....\r\n
+(grabs a random n number of songs)
+3\r\n numberOfSongs: \r\n\r\n
+(grabs a specific album)
+4\r\n artist: \r\n album: \r\n\r\n
+(grab all songs by artist)
+5\r\n artist: \r\n numberOfSongs: \r\n\r\n
+(grabs song based on genre)
+6\r\n numberOfSongs: \r\n genre: \r\n\r\n
+# if someone includes additional info it is ignored
+# if something is not included, it will throw an error saying that the client is missing essential information
+# if something (artist, album, etc.) does not exist on the server it will throw an error saying that it doesn't exist
+# if option 2 is selected, and they select more than the specified number of songs, server will take only the first n number or if less are given it will take what's given
+# if client doesn't specify number of songs for 5 and 6 it will just grab all songs that qualify
