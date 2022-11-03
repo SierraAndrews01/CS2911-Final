@@ -13,7 +13,6 @@ def MusicServer():
         #client, request_address = server_socket.accept()
         #client.sendall(b"Hello and welcome to the Music Server\r\n\r\n")
         #message = reciveUntilEnd(client)
-        if 
         message = message.decode()
         if message[0:1] == "1":
             found = False
