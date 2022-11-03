@@ -29,19 +29,16 @@ def tcp_send(server_host, server_port):
     optionSixDescription = 'Select songs from a specific genre = 6 \r\n'
     totalDescription = optionOneDescription + optionTwoDescription + optionThreeDescription + optionFourDescription + optionFiveDescription + optionSixDescription
     askWhatOption = 'Which option would you like to select: \r\n\r\n'
-    tcp_socket.sendall(totalDescription + askWhatOption)
-    # Based on whatever number the user said, ask for the necessary requirements
-    # Read input from command prompt
-    userRequest = tcp_socket.recv()
+    print(totalDescription + askWhatOption)
+    userRequest = input()
     # TODO: Add a listener
-    # TODO: Figure out how to properly receive data from user
 
     if userRequest == 1:
         print('What artist would you like to play: ')
         artistans = input()
         print('What song title would you like to play: ')
         songans = input()
-        tcp_socket.sendall('1 \r\n artist: ' + artistans + '\r\n song: ' + songans)
+        tcp_socket.sendall('1 \r\n artist: ' + artistans + '\r\n song: ' + songans + '\r\n\r\n')
     elif userRequest == 2:
         print('How many songs would you like to listen to: ')
         numSongs = input()
@@ -57,23 +54,25 @@ def tcp_send(server_host, server_port):
         tcp_socket.sendall(fullans + '\r\n')
     elif userRequest == 3:
         print('How many songs would you like: ')
-
+        tcp_socket.sendall('3 \r\n numberOfSongs: ' + input() + '\r\n\r\n')
     elif userRequest == 4:
-        firstQuestion = 'What artist would you like to play: \r\n'
-        secondQuestion = 'What album would you like to play: \r\n'
-        fullQuestion = firstQuestion + secondQuestion
-        tcp_socket.send(fullQuestion)
+        print('What artist would you like to play: ')
+        ans1 = input()
+        print('What album would you like to play: ')
+        ans2 = input()
+        tcp_socket.sendall('4 \r\n artist: ' + ans1 + '\r\n album: ' + ans2 + '\r\n\r\n')
     elif userRequest == 5:
-        firstQuestion = 'What artist would you like to play: \r\n'
-        secondQuestion = 'What number of songs would you like to play by them: \r\n'
-        fullQuestion = firstQuestion + secondQuestion
-        tcp_socket.send(fullQuestion)
+        print('What artist would you like to play: ')
+        ans1 = input()
+        print('What number of songs would you like to play by them: ')
+        ans2 = input()
+        tcp_socket.sendall('5 \r\n artist: ' + ans1 + '\r\n numberOfSongs ' + ans2 + '\r\n\r\n')
     elif userRequest == 6:
-        firstQuestion = 'What genre would you like to play: \r\n'
-        secondQuestion = 'What number of songs would you like to play: \r\n'
-        fullQuestion = firstQuestion + secondQuestion
-        tcp_socket.send(fullQuestion)
-    # Send info to server
+        print('What genre would you like to play: ')
+        ans1 = input()
+        print('What number of songs would you like to play: ')
+        ans2 = input()
+        tcp_socket.sendall('6 \r\n genre: ' + ans1 + '\r\n numberOfSongs: ' + ans2 + '\r\n\r\n')
     # Use the info the server sends back to display the music to the user
 
 if __name__ == "__main__":
