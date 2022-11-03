@@ -31,28 +31,33 @@ def tcp_send(server_host, server_port):
     askWhatOption = 'Which option would you like to select: \r\n\r\n'
     tcp_socket.sendall(totalDescription + askWhatOption)
     # Based on whatever number the user said, ask for the necessary requirements
+    # Read input from command prompt
     userRequest = tcp_socket.recv()
     # TODO: Add a listener
     # TODO: Figure out how to properly receive data from user
 
-    # Would we take this info and return a list of possible songs or
-    # just directly ask the user for the song title too
     if userRequest == 1:
-        firstQuestion = 'What artist would you like to play: \r\n'
-        secondQuestion = 'What song title would you like to play: \r\n'
-        fullQuestion = firstQuestion + secondQuestion
-        tcp_socket.send(fullQuestion)
+        print('What artist would you like to play: ')
+        artistans = input()
+        print('What song title would you like to play: ')
+        songans = input()
+        tcp_socket.sendall('1 \r\n artist: ' + artistans + '\r\n song: ' + songans)
     elif userRequest == 2:
-        tcp_socket.send('How many songs would you like to listen to: ')
-        numSongs = tcp_socket.recv(server_host, server_port)
+        print('How many songs would you like to listen to: ')
+        numSongs = input()
+        fullans = '2 '
         for song in numSongs:
-            firstQuestion = 'What artist would you like to play: \r\n'
-            secondQuestion = 'What song title would you like to play: \r\n'
-            fullQuestion = firstQuestion + secondQuestion
-            tcp_socket.send(fullQuestion)
+            firstQuestion = 'What artist would you like to play: '
+            print(firstQuestion)
+            artistans = input()
+            secondQuestion = 'What song title would you like to play: '
+            print(secondQuestion)
+            songans = input()
+            fullans += '\r\n' + 'artist: ' + artistans + '\r\n' + 'song: ' +songans + '\r\n'
+        tcp_socket.sendall(fullans + '\r\n')
     elif userRequest == 3:
-        # Does this need anything??
-        print()
+        print('How many songs would you like: ')
+
     elif userRequest == 4:
         firstQuestion = 'What artist would you like to play: \r\n'
         secondQuestion = 'What album would you like to play: \r\n'
