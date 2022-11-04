@@ -43,7 +43,7 @@ def tcp_send(server_host, server_port):
         print('How many songs would you like to listen to: ')
         numSongs = input()
         fullans = b'2 '
-        for song in numSongs:
+        for i in range(numSongs):
             firstQuestion = 'What artist would you like to play: '
             print(firstQuestion)
             artistans = input()
