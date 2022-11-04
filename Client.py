@@ -19,8 +19,7 @@ def tcp_send(server_host, server_port):
     # server_socket.listen(num_connections)
     # Display any and all possible options the user could select
     # Create a file(messages) with the options
-    header = 'Key (required),artist(optional),song(optional),number of songs(optional),album(optional),'
-    + 'genres(optional)'
+    header = 'Key (required),artist(optional),song(optional),number of songs(optional),album(optional),' + 'genres(optional)'
     optionOneDescription = 'Select a single song = 1 \r\n'
     optionTwoDescription = 'Select a certain number of specified songs = 2 \r\n'
     optionThreeDescription = 'Select a random number of songs = 3 \r\n'
