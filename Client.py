@@ -40,8 +40,9 @@ def tcp_send(server_host, server_port):
             tcp_socket.sendall(b'1 \r\n artist: ' + artistans.encode() + b'\r\n song: ' + songans.encode() + b'\r\n\r\n')
         elif userRequest == 2:
             print('How many songs would you like to listen to: ')
-            numSongs = int(input())
-            fullans = b'2 '
+            numSongs = input()
+            fullans = b'2 \r\n numberOfSongs: ' + numSongs.encode()
+            numSongs = int(numSongs)
             for i in range(numSongs):
                 firstQuestion = 'What artist would you like to play: '
                 print(firstQuestion)
