@@ -7,13 +7,14 @@ def MusicServer():
     listen_address = ('', 12345)
     server_socket.bind(listen_address)
     server_socket.listen()
-    message = b"4\r\n artist: ICE NINE KILLS\r\n album: The Predator Becomes The Prey\r\n\r\n"
+    #message = b"4\r\n artist: ICE NINE KILLS\r\n album: The Predator Becomes The Prey\r\n\r\n"
+    client, request_address = server_socket.accept()
     ONCE = True
+    message = ""
     while ONCE:
-        #client, request_address = server_socket.accept()
         #client.sendall(b"Hello and welcome to the Music Server\r\n\r\n")
-        #message = reciveUntilEnd(client)
-        message = message.decode()
+        message = reciveUntilEnd(client)
+        print(message)
         if message[0:1] == "1":
             found = False
             if "artist:" in message and "song:" in message:
@@ -131,7 +132,6 @@ def MusicServer():
         else:
             #client.sendall(b"Key value is not recognized\r\n\r\n")
             print("BIGBAD")
-        ONCE = False
 
 def reciveUntilEnd(socket):
     count = 0
@@ -142,8 +142,8 @@ def reciveUntilEnd(socket):
             count += 1
         else:
             count = 0
-        message += currentByte
-    return
+        message += currentByte.decode()
+    return message
 
 def getInfo(start, message):
     info = message[message.find(start):]
