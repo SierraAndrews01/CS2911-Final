@@ -38,11 +38,11 @@ def tcp_send(server_host, server_port):
         artistans = input()
         print('What song title would you like to play: ')
         songans = input()
-        tcp_socket.sendall('1 \r\n artist: ' + artistans + '\r\n song: ' + songans + '\r\n\r\n')
+        tcp_socket.sendall(b'1 \r\n artist: ' + artistans.encode() + b'\r\n song: ' + songans.encode() + b'\r\n\r\n')
     elif userRequest == 2:
         print('How many songs would you like to listen to: ')
         numSongs = input()
-        fullans = '2 '
+        fullans = b'2 '
         for song in numSongs:
             firstQuestion = 'What artist would you like to play: '
             print(firstQuestion)
@@ -50,30 +50,29 @@ def tcp_send(server_host, server_port):
             secondQuestion = 'What song title would you like to play: '
             print(secondQuestion)
             songans = input()
-            fullans += '\r\n' + 'artist: ' + artistans + '\r\n' + 'song: ' +songans + '\r\n'
-        tcp_socket.sendall(fullans + '\r\n')
+            fullans += b'\r\n artist: ' + artistans.encode() + b'\r\n' + b'song: ' + songans.encode() + b'\r\n'
+        tcp_socket.sendall(fullans + b'\r\n')
     elif userRequest == 3:
         print('How many songs would you like: ')
-        tcp_socket.sendall('3 \r\n numberOfSongs: ' + input() + '\r\n\r\n')
+        tcp_socket.sendall(b'3 \r\n numberOfSongs: ' + input().encode() + b'\r\n\r\n')
     elif userRequest == 4:
         print('What artist would you like to play: ')
         ans1 = input()
         print('What album would you like to play: ')
         ans2 = input()
-        tcp_socket.sendall('4 \r\n artist: ' + ans1 + '\r\n album: ' + ans2 + '\r\n\r\n')
+        tcp_socket.sendall(b'4 \r\n artist: ' + ans1.encode() + b'\r\n album: ' + ans2.encode() + b'\r\n\r\n')
     elif userRequest == 5:
         print('What artist would you like to play: ')
         ans1 = input()
         print('What number of songs would you like to play by them: ')
         ans2 = input()
-        tcp_socket.sendall('5 \r\n artist: ' + ans1 + '\r\n numberOfSongs ' + ans2 + '\r\n\r\n')
+        tcp_socket.sendall(b'5 \r\n artist: ' + ans1.encode() + b'\r\n numberOfSongs ' + ans2.encode() + b'\r\n\r\n')
     elif userRequest == 6:
         print('What genre would you like to play: ')
         ans1 = input()
         print('What number of songs would you like to play: ')
         ans2 = input()
-        # totalMessage = '6 \r\n genre: ' + ans1 + '\r\n numberOfSongs: ' + ans2 + '\r\n\r\n'
-        tcp_socket.sendall()
+        tcp_socket.sendall(b'6 \r\n genre: ' + ans1.encode() + b'\r\n numberOfSongs: ' + ans2.encode() + b'\r\n\r\n')
     # Use the info the server sends back to display the music to the user
 
 if __name__ == "__main__":
