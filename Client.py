@@ -30,7 +30,7 @@ def tcp_send(server_host, server_port):
     totalDescription = optionOneDescription + optionTwoDescription + optionThreeDescription + optionFourDescription + optionFiveDescription + optionSixDescription
     askWhatOption = 'Which option would you like to select: \r\n\r\n'
     print(totalDescription + askWhatOption)
-    userRequest = input()
+    userRequest = int(input())
     # TODO: Add a listener
 
     if userRequest == 1:
@@ -72,7 +72,8 @@ def tcp_send(server_host, server_port):
         ans1 = input()
         print('What number of songs would you like to play: ')
         ans2 = input()
-        tcp_socket.sendall('6 \r\n genre: ' + ans1 + '\r\n numberOfSongs: ' + ans2 + '\r\n\r\n')
+        # totalMessage = '6 \r\n genre: ' + ans1 + '\r\n numberOfSongs: ' + ans2 + '\r\n\r\n'
+        tcp_socket.sendall()
     # Use the info the server sends back to display the music to the user
 
 if __name__ == "__main__":
