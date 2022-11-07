@@ -66,7 +66,7 @@ def tcp_send(server_host, server_port):
             print('What artist would you like to play: ')
             ans1 = input()
             print('What number of songs would you like to play by them: ')
-            ans2 = int(input())
+            ans2 = input()
             tcp_socket.sendall(b'5 \r\n artist: ' + ans1.encode() + b'\r\n numberOfSongs ' + ans2.encode() + b'\r\n\r\n')
         elif userRequest == 6:
             print('What genre would you like to play: ')
