@@ -57,8 +57,8 @@ def tcp_send(server_host, server_port):
             # Write bytes to file
             binary_file.write(song)
             # Play song
-            playSong = AudioSegment.from_wav(binary_file)
-            play(playSong)
+            wavFile = AudioSegment.from_file(binary_file, "wav")
+            play(wavFile)
             # Close file
             binary_file.close()
 
