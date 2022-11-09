@@ -102,7 +102,7 @@ def tcp_send(server_host, server_port):
             ans2 = input()
             tcp_socket.sendall(b'5 \r\n artist: ' + ans1.encode() + b'\r\n numberOfSongs ' + ans2.encode() + b'\r\n\r\n')
 
-        elif userRequest == 6:
+        elif userRequest == 0:
             break
         # Use the info the server sends back to display the music to the user
 
