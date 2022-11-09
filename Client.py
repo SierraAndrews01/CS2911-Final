@@ -51,6 +51,7 @@ def tcp_send(server_host, server_port):
             print('What song title would you like to play: ')
             songans = input()
             tcp_socket.sendall(b'1 \r\n artist: ' + artistans.encode() + b'\r\n song: ' + songans.encode() + b'\r\n\r\n')
+            song = b''
             song = reciveUntilEnd(tcp_socket)
 
             # Open file in binary write mode
