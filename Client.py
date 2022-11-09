@@ -53,7 +53,7 @@ def tcp_send(server_host, server_port):
             song = reciveUntilEnd(tcp_socket)
 
             # Open file in binary write mode
-            binary_file = open("my_file.txt", "wb")
+            binary_file = open("my_file.wav", "wb")
             # Write bytes to file
             binary_file.write(song)
             # Play song
