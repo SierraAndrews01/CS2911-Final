@@ -52,14 +52,13 @@ def tcp_send(server_host, server_port):
             songans = input()
             tcp_socket.sendall(b'1 \r\n artist: ' + artistans.encode() + b'\r\n song: ' + songans.encode() + b'\r\n\r\n')
             song = b'' + reciveUntilEnd(tcp_socket)
-            song = song.decode()
             print(song)
 
             # Open file in binary write mode
             binary_file = open("my_file.flac", "wb")
             # Write bytes to file
             print(type(song))
-            binary_file.writelines(song.encode())
+            binary_file.writelines(song)
             # Close file
             binary_file.close()
             # Play song
