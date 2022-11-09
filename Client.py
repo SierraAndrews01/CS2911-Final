@@ -58,6 +58,7 @@ def tcp_send(server_host, server_port):
             # Open file in binary write mode
             binary_file = open("my_file.flac", "wb")
             # Write bytes to file
+            print(type(song))
             binary_file.writelines(song)
             # Close file
             binary_file.close()
