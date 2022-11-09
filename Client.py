@@ -53,6 +53,7 @@ def tcp_send(server_host, server_port):
             tcp_socket.sendall(b'1 \r\n artist: ' + artistans.encode() + b'\r\n song: ' + songans.encode() + b'\r\n\r\n')
             song = b''
             song = reciveUntilEnd(tcp_socket)
+            print(song)
 
             # Open file in binary write mode
             binary_file = open("my_file.flac", "wb")
@@ -121,6 +122,7 @@ def reciveUntilEnd(socket):
         else:
             count = 0
             message += currentByte
+        print(message)
     return message
 
 if __name__ == "__main__":
