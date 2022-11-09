@@ -1,3 +1,4 @@
+import io
 from socket import *
 from pydub import AudioSegment
 from pydub.playback import play
@@ -53,11 +54,13 @@ def tcp_send(server_host, server_port):
             song = reciveUntilEnd(tcp_socket)
 
             # Open file in binary write mode
-            binary_file = open("my_file.wav", "wb")
+            binary_file = open("my_file.flac", "wb")
             # Write bytes to file
             binary_file.write(song)
             # Play song
-            wavFile = AudioSegment.from_file(binary_file, "wav")
+            wavFile = AudioSegment.from_file(binary_file, format = "flac")
+            # Saves file to computer
+            wavFile.export("tempFile.wav", format = "wav")
             play(wavFile)
             # Close file
             binary_file.close()
