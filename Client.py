@@ -50,7 +50,7 @@ def tcp_send(server_host, server_port):
             print('What song title would you like to play: ')
             songans = input()
             tcp_socket.sendall(b'1 \r\n artist: ' + artistans.encode() + b'\r\n song: ' + songans.encode() + b'\r\n\r\n')
-            song = tcp_socket.recv()
+            song = reciveUntilEnd(tcp_socket)
 
             # Open file in binary write mode
             binary_file = open("my_file.txt", "wb")
@@ -105,6 +105,19 @@ def tcp_send(server_host, server_port):
         elif userRequest == 0:
             break
         # Use the info the server sends back to display the music to the user
+
+
+def reciveUntilEnd(socket):
+    count = 0
+    message = ""
+    while count != 4:
+        currentByte = socket.recv(1)
+        if currentByte == b'\r' or currentByte == b'\n':
+            count += 1
+        else:
+            count = 0
+            message += currentByte.decode()
+    return message
 
 if __name__ == "__main__":
     tcp_send(OTHER_HOST, TCP_Port)
