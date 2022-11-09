@@ -109,7 +109,7 @@ def tcp_send(server_host, server_port):
 
 def reciveUntilEnd(socket):
     count = 0
-    message = ""
+    message = b""
     while count != 4:
         currentByte = socket.recv(1)
         if currentByte == b'\r' or currentByte == b'\n':
