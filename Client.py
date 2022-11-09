@@ -116,7 +116,7 @@ def reciveUntilEnd(socket):
             count += 1
         else:
             count = 0
-            message += currentByte.decode()
+            message += currentByte
     return message
 
 if __name__ == "__main__":
