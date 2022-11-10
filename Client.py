@@ -65,7 +65,7 @@ def tcp_send(server_host, server_port):
             # Close file
             binary_file.close()
             # Play song
-            wavFile = AudioSegment.from_file(binary_file, format = "wav")
+            wavFile = AudioSegment.from_file(binary_file, format = "flac")
             # Saves file to computer
             wavFile.export("tempFile.wav", format = "wav")
             play(wavFile)
