@@ -29,6 +29,8 @@ def MusicServer():
 
                                 fileLocation = "C:/Users/kitzmann/Music/"+artist+"/"+sub+"/"+checkSong
                                 file = open(fileLocation, "rb")
+                                client.sendall(b"Length: " +str(os.stat(fileLocation).st_size).encode()+b'\r\n\r\n')
+                                print(b"Length: " + str(os.stat(fileLocation).st_size).encode()+b'\r\n\r\n')
                                 client.sendall(file.read(os.stat(fileLocation).st_size))
                                 client.sendall(b'\r\n\r\n')
                                 found = True

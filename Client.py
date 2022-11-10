@@ -54,7 +54,7 @@ def tcp_send(server_host, server_port):
             length = reciveUntilEnd(tcp_socket)
             actualLength = length[7:]
 
-            song = b'' + tcp_socket.recv(43064837)#reciveUntilEnd(tcp_socket)
+            song = b'' + tcp_socket.recv(int(actualLength))
 
             # Open file in binary write mode
             binary_file = open("my_file.flac", "wb")
@@ -121,6 +121,7 @@ def reciveUntilEnd(socket):
         else:
             count = 0
             message += currentByte.decode()
+        print(message)
     return message
 
 if __name__ == "__main__":
