@@ -51,9 +51,7 @@ def tcp_send(server_host, server_port):
             print('What song title would you like to play: ')
             songans = input()
             tcp_socket.sendall(b'1 \r\n artist: ' + artistans.encode() + b'\r\n song: ' + songans.encode() + b'\r\n\r\n')
-            song = b'' + reciveUntilEnd(tcp_socket)
-            print(song)
-            # song = song.decode('utf-16le')
+            song = b'' + tcp_socket.recv(43064837)#reciveUntilEnd(tcp_socket)
 
             # Open file in binary write mode
             binary_file = open("my_file.flac", "wb")
@@ -65,10 +63,10 @@ def tcp_send(server_host, server_port):
             # Close file
             binary_file.close()
             # Play song
-            wavFile = AudioSegment.from_file(binary_file, format = "wav")
+            #wavFile = AudioSegment.from_file(binary_file, format = "flac")
             # Saves file to computer
-            wavFile.export("tempFile.wav", format = "wav")
-            play(wavFile)
+            #wavFile.export("tempFile.wav", format = "wav")
+            #play(wavFile)
 
         elif userRequest == 2:
 
