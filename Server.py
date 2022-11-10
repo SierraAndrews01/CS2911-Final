@@ -26,9 +26,10 @@ def MusicServer():
                         for checkSong in songs:
                             if checkSong[3:] == (song+".flac"):
                                 print("FOUND")
+
                                 fileLocation = "C:/Users/kitzmann/Music/"+artist+"/"+sub+"/"+checkSong
                                 file = open(fileLocation, "rb")
-                                client.sendall(file.read(1024))
+                                client.sendall(file.read(os.stat(fileLocation).st_size))
                                 client.sendall(b'\r\n\r\n')
                                 found = True
                                 file.close()
