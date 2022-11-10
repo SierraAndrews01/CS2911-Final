@@ -59,7 +59,9 @@ def tcp_send(server_host, server_port):
             binary_file = open("my_file.flac", "wb")
             # Write bytes to file
             print(type(song))
-            binary_file.writelines(song)
+            listSong = []
+            listSong.append(song)
+            binary_file.writelines(listSong)
             # Close file
             binary_file.close()
             # Play song
