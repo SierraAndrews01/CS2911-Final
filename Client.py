@@ -99,6 +99,16 @@ def tcp_send(server_host, server_port):
             ans = input()
             tcp_socket.sendall(b'3 \r\n numberOfSongs: ' + ans.encode() + b'\r\n\r\n')
 
+            for i in range(int(ans)):
+                length = reciveUntilEnd(tcp_socket)
+                actualLength = length[7:]
+                song = b'' + tcp_socket.recv(int(actualLength))
+                binary_file = open("song" + i + ".flac", "wb")
+                listSong = []
+                listSong.append(song)
+                binary_file.writelines(listSong)
+                binary_file.close()
+
         elif userRequest == 4:
 
             print('What artist would you like to play: ')
