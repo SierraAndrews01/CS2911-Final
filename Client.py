@@ -87,7 +87,7 @@ def tcp_send(server_host, server_port):
                 length = reciveUntilEnd(tcp_socket)
                 actualLength = length[7:]
                 song = b'' + tcp_socket.recv(int(actualLength))
-                binary_file = open("song" + i + ".flac", "wb")
+                binary_file = open("song" + str(i) + ".flac", "wb")
                 listSong = []
                 listSong.append(song)
                 binary_file.writelines(listSong)
@@ -101,13 +101,15 @@ def tcp_send(server_host, server_port):
 
             for i in range(int(ans)):
                 length = reciveUntilEnd(tcp_socket)
-                actualLength = length[7:]
+                actualLength = length[8:]
+                print(actualLength)
                 song = b'' + tcp_socket.recv(int(actualLength))
-                binary_file = open("song" + i + ".flac", "wb")
+                binary_file = open("song" + str(i) + ".flac", "wb")
                 listSong = []
                 listSong.append(song)
                 binary_file.writelines(listSong)
                 binary_file.close()
+                tcp_socket.sendall(b'A')
 
         elif userRequest == 4:
 
@@ -137,23 +139,20 @@ def tcp_send(server_host, server_port):
             ans1 = input()
             print('What number of songs would you like to play by them (0 means grab all): ')
             ans2 = input()
-            tcp_socket.sendall(b'5 \r\n artist: ' + ans1.encode() + b'\r\n numberOfSongs ' + ans2.encode() + b'\r\n\r\n')
+            tcp_socket.sendall(b'5 \r\n artist: ' + ans1.encode() + b'\r\n numberOfSongs: ' + ans2.encode() + b'\r\n\r\n')
 
 
-            if ans2 == 0:
-                numSongs2 = # ?
+            if ans2 == "0":
+                #numSongs2 = # ?
+                pass
             else:
-                numSongs2 = int(ans1)
-
-            length = reciveUntilEnd(tcp_socket)
-            actualLength = length[7:]
-            song = b'' + tcp_socket.recv(int(actualLength))
+                numSongs2 = int(ans2)
 
             for i in range(numSongs2):
                 length = reciveUntilEnd(tcp_socket)
                 actualLength = length[7:]
                 song = b'' + tcp_socket.recv(int(actualLength))
-                binary_file = open("song" + i + ".flac", "wb")
+                binary_file = open("song" + str(i) + ".flac", "wb")
                 listSong = []
                 listSong.append(song)
                 binary_file.writelines(listSong)
@@ -167,12 +166,14 @@ def reciveUntilEnd(socket):
     message = ""
     while count != 4:
         currentByte = socket.recv(1)
+        print(currentByte)
         if currentByte == b'\r' or currentByte == b'\n':
             count += 1
         else:
             count = 0
             message += currentByte.decode()
         print(message)
+    print("DONE")
     return message
 
 if __name__ == "__main__":

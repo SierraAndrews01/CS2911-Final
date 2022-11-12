@@ -30,9 +30,7 @@ def MusicServer():
                                 fileLocation = "C:/Users/kitzmann/Music/"+artist+"/"+sub+"/"+checkSong
                                 file = open(fileLocation, "rb")
                                 client.sendall(b"Length: " +str(os.stat(fileLocation).st_size).encode()+b'\r\n\r\n')
-                                print(b"Length: " + str(os.stat(fileLocation).st_size).encode()+b'\r\n\r\n')
                                 client.sendall(file.read(os.stat(fileLocation).st_size))
-                                client.sendall(b'\r\n\r\n')
                                 found = True
                                 file.close()
                                 break
@@ -57,8 +55,10 @@ def MusicServer():
                                 for checkSong in songs:
                                     if checkSong[3:] == (song+".flac"):
                                         print("FOUND")
-                                        file = open(checkSong, "rb")
-                                        client.sendall(file+b'\r\n')
+                                        fileLocation = "C:/Users/kitzmann/Music/"+artist+"/"+sub+"/"+checkSong
+                                        file = open(fileLocation, "rb")
+                                        client.sendall(b"Length: " +str(os.stat(fileLocation).st_size).encode()+b'\r\n\r\n')
+                                        client.sendall(file.read(os.stat(fileLocation).st_size))
                                         found = True
                                         break
                                 if found:
@@ -78,12 +78,18 @@ def MusicServer():
                     if os.path.isdir("C:/Users/kitzmann/Music/"+artist):
                         sub = random.choice(os.listdir("C:/Users/kitzmann/Music/"+artist))
                         song = random.choice(os.listdir("C:/Users/kitzmann/Music/"+artist+"/"+sub))
-                        if song not in songs and song.endswith(".flac"):
-                            songs.append(song)
-                            file = open(song, "rb")
-                            client.sendall(file+b'\r\n')
-                            number += 1
-                client.sendall(b'\r\n')
+                        if song not in songs:
+                            if song[song.find("."):] == ".flac":
+                                songs.append(song)
+                                fileLocation = "C:/Users/kitzmann/Music/"+artist+"/"+sub+"/"+song
+                                print(fileLocation)
+                                file = open(fileLocation, "rb")
+                                client.sendall(b"Length: " +str(os.stat(fileLocation).st_size).encode()+b'\r\n\r\n')
+                                client.sendall(file.read(os.stat(fileLocation).st_size))
+                                number += 1
+                                current = client.recv(1)
+                                while  current != b'A':
+                                    current = client.recv(1)
 
             else:
                 client.sendall(b"You are missing essential information for this key\r\n\r\n")
@@ -97,8 +103,11 @@ def MusicServer():
                     if os.path.exists("C:/Users/kitzmann/Music/"+artist+"/"+album):
                         songs = os.listdir("C:/Users/kitzmann/Music/"+artist+"/"+album)
                         for song in songs:
-                            songMessage += song.encode() + b'\r\n'
-                client.sendall(songMessage + b'\r\n')
+                            if song[song.find("."):] == ".flac":
+                                fileLocation = "C:/Users/kitzmann/Music/"+artist+"/"+album+"/"+song
+                                file = open(fileLocation, "rb")
+                                client.sendall(b"Length: " +str(os.stat(fileLocation).st_size).encode()+b'\r\n\r\n')
+                                client.sendall(file.read(os.stat(fileLocation).st_size))
 
             else:
                 client.sendall(b"You are missing essential information for this key\r\n\r\n")
@@ -109,17 +118,21 @@ def MusicServer():
                 artist = getInfo("artist:",message)
                 numberOfSongs = getInfo("numberOfSongs:", message)
                 number = 0 
+                print(numberOfSongs)
                 while number < int(numberOfSongs):
                     subs = os.listdir("C:/Users/kitzmann/Music/"+artist)
                     sub = random.choice(subs)
                     print(sub)
                     song = random.choice(os.listdir("C:/Users/kitzmann/Music/"+artist+"/"+sub))
+                    print(song)
                     if song not in songs:
-                        songs.append(song)
-                        file = open(song, "rb")
-                        songMessage += file + b'\r\n'
-                        number += 1
-                client.sendall(songMessage + b'\r\n')
+                        if song[song.find("."):] == ".flac":
+                            songs.append(song)
+                            fileLocation = "C:/Users/kitzmann/Music/"+artist+"/"+sub+"/"+song
+                            file = open(fileLocation, "rb")
+                            client.sendall(b"Length: " +str(os.stat(fileLocation).st_size).encode()+b'\r\n\r\n')
+                            client.sendall(file.read(os.stat(fileLocation).st_size))
+                            number += 1
 
             elif "artist:" in message:
                 allSongs = []
@@ -132,19 +145,13 @@ def MusicServer():
                         for song in songs:
                            if song not in songs:
                             allSongs.append(song)
-                            file = open(song, "rb")
-                            songMessage += file+ b'\r\n'
-                    client.sendall(songMessage + b'\r\n')
+                            fileLocation = "C:/Users/kitzmann/Music/"+artist+"/"+sub+"/"+song
+                            file = open(fileLocation, "rb")
+                            client.sendall(b"Length: " +str(os.stat(fileLocation).st_size).encode()+b'\r\n\r\n')
+                            client.sendall(file.read(os.stat(fileLocation).st_size))
+
             else:
                 client.sendall(b"You are missing essential information for this key\r\n\r\n")
-        elif message[0:1] == "6":
-            if "numberOfSongs:" in message and "genre:" in message:
-                pass
-            else:
-                pass
-                #client.sendall(b"You are missing essential information for this key\r\n\r\n")
-        else:
-            client.sendall(b"Key value is not recognized\r\n\r\n")
 
 def reciveUntilEnd(socket):
     count = 0
