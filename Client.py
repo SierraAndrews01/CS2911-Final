@@ -98,8 +98,9 @@ def tcp_send(server_host, server_port):
             print('How many songs would you like: ')
             ans = input()
             tcp_socket.sendall(b'3 \r\n numberOfSongs: ' + ans.encode() + b'\r\n\r\n')
+            album = tcp_socket.recv(server_host, server_port)
 
-            for i in range(int(ans)):
+            while album:
                 length = reciveUntilEnd(tcp_socket)
                 actualLength = length[8:]
                 print(actualLength)
