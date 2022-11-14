@@ -98,10 +98,10 @@ def tcp_send(server_host, server_port):
             print('How many songs would you like: ')
             ans = input()
             tcp_socket.sendall(b'3 \r\n numberOfSongs: ' + ans.encode() + b'\r\n\r\n')
-            album = tcp_socket.recv(server_host, server_port)
 
-            while album:
+            for i in range(int(ans)):
                 length = reciveUntilEnd(tcp_socket)
+                tcp_socket.sendall(b'A')
                 actualLength = length[8:]
                 print(actualLength)
                 song = b'' + tcp_socket.recv(int(actualLength))
@@ -111,6 +111,7 @@ def tcp_send(server_host, server_port):
                 binary_file.writelines(listSong)
                 binary_file.close()
                 tcp_socket.sendall(b'A')
+               
 
         elif userRequest == 4:
 

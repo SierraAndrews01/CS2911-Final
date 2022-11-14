@@ -84,7 +84,11 @@ def MusicServer():
                                 fileLocation = "C:/Users/kitzmann/Music/"+artist+"/"+sub+"/"+song
                                 print(fileLocation)
                                 file = open(fileLocation, "rb")
+                                print(str(os.stat(fileLocation).st_size))
                                 client.sendall(b"Length: " +str(os.stat(fileLocation).st_size).encode()+b'\r\n\r\n')
+                                current = client.recv(1)
+                                while  current != b'A':
+                                    current = client.recv(1)
                                 client.sendall(file.read(os.stat(fileLocation).st_size))
                                 number += 1
                                 current = client.recv(1)
