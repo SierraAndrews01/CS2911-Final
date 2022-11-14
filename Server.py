@@ -58,6 +58,9 @@ def MusicServer():
                                         fileLocation = "C:/Users/kitzmann/Music/"+artist+"/"+sub+"/"+checkSong
                                         file = open(fileLocation, "rb")
                                         client.sendall(b"Length: " +str(os.stat(fileLocation).st_size).encode()+b'\r\n\r\n')
+                                        current = client.recv(1)
+                                        while  current != b'A':
+                                            current = client.recv(1)
                                         client.sendall(file.read(os.stat(fileLocation).st_size))
                                         found = True
                                         break
@@ -98,6 +101,7 @@ def MusicServer():
             else:
                 client.sendall(b"You are missing essential information for this key\r\n\r\n")
         elif message[0:1] == "4":
+            songs = []
             if "artist:" in message and "album:" in message:
                 artist = getInfo("artist:", message)
                 album = getInfo("album:", message)
@@ -105,13 +109,20 @@ def MusicServer():
                 if os.path.exists("C:/Users/kitzmann/Music/"+artist):
                     subs = os.listdir("C:/Users/kitzmann/Music/"+artist)
                     if os.path.exists("C:/Users/kitzmann/Music/"+artist+"/"+album):
-                        songs = os.listdir("C:/Users/kitzmann/Music/"+artist+"/"+album)
-                        for song in songs:
+                        allSongs = os.listdir("C:/Users/kitzmann/Music/"+artist+"/"+album)
+                        print(songs)
+                        for song in allSongs:
                             if song[song.find("."):] == ".flac":
                                 fileLocation = "C:/Users/kitzmann/Music/"+artist+"/"+album+"/"+song
-                                file = open(fileLocation, "rb")
-                                client.sendall(b"Length: " +str(os.stat(fileLocation).st_size).encode()+b'\r\n\r\n')
-                                client.sendall(file.read(os.stat(fileLocation).st_size))
+                                songs.append(fileLocation)
+                client.sendall(b"Length: " +str(len(songs)).encode()+b'\r\n\r\n')
+                for i in range(len(songs)):
+                    client.sendall(b"Length: " +str(os.stat(songs[i]).st_size).encode()+b'\r\n\r\n')
+                    current = client.recv(1)
+                    while  current != b'A':
+                        current = client.recv(1)
+                    file = open(songs[i], 'rb')
+                    client.sendall(file.read(os.stat(songs[i]).st_size))
 
             else:
                 client.sendall(b"You are missing essential information for this key\r\n\r\n")
@@ -123,39 +134,51 @@ def MusicServer():
                 numberOfSongs = getInfo("numberOfSongs:", message)
                 number = 0 
                 print(numberOfSongs)
-                while number < int(numberOfSongs):
-                    subs = os.listdir("C:/Users/kitzmann/Music/"+artist)
-                    sub = random.choice(subs)
-                    print(sub)
-                    song = random.choice(os.listdir("C:/Users/kitzmann/Music/"+artist+"/"+sub))
-                    print(song)
-                    if song not in songs:
-                        if song[song.find("."):] == ".flac":
-                            songs.append(song)
-                            fileLocation = "C:/Users/kitzmann/Music/"+artist+"/"+sub+"/"+song
-                            file = open(fileLocation, "rb")
-                            client.sendall(b"Length: " +str(os.stat(fileLocation).st_size).encode()+b'\r\n\r\n')
-                            client.sendall(file.read(os.stat(fileLocation).st_size))
-                            number += 1
-
-            elif "artist:" in message:
-                allSongs = []
-                songMessage = b''
-                artist = getInfo("artist:",message)
-                if os.path.exists("C:/Users/kitzmann/Music/"+artist):
+                if(numberOfSongs == "0"):
                     subs = os.listdir("C:/Users/kitzmann/Music/"+artist)
                     for sub in subs:
-                        songs = os.listdir("C:/Users/kitzmann/Music/"+artist+"/"+sub)
-                        for song in songs:
-                           if song not in songs:
-                            allSongs.append(song)
-                            fileLocation = "C:/Users/kitzmann/Music/"+artist+"/"+sub+"/"+song
-                            file = open(fileLocation, "rb")
-                            client.sendall(b"Length: " +str(os.stat(fileLocation).st_size).encode()+b'\r\n\r\n')
-                            client.sendall(file.read(os.stat(fileLocation).st_size))
+                        allSongs = os.listdir("C:/Users/kitzmann/Music/"+artist+"/"+sub)
+                        for song in allSongs:
+                            if song[song.find("."):] == ".flac":
+                                fileLocation = "C:/Users/kitzmann/Music/"+artist+"/"+sub+"/"+song
+                                songs.append(fileLocation)
+                    client.sendall(b"Length: " +str(len(songs)).encode()+b'\r\n\r\n')
+                    current = client.recv(1)
+                    while  current != b'A':
+                        current = client.recv(1)
+                    print(len(songs))
+                    for i in range(len(songs)):
+                        print(songs[i])
+                        client.sendall(b"Length: " +str(os.stat(songs[i]).st_size).encode()+b'\r\n\r\n')
+                        current = client.recv(1)
+                        while  current != b'A':
+                            current = client.recv(1)
+                        file = open(songs[i], 'rb')
+                        client.sendall(file.read(os.stat(songs[i]).st_size))
+                else:
+                    while number < int(numberOfSongs):
+                        subs = os.listdir("C:/Users/kitzmann/Music/"+artist)
+                        sub = random.choice(subs)
+                        print(sub)
+                        song = random.choice(os.listdir("C:/Users/kitzmann/Music/"+artist+"/"+sub))
+                        print(song)
+                        if song not in songs:
+                            if song[song.find("."):] == ".flac":
+                                songs.append(song)
+                                fileLocation = "C:/Users/kitzmann/Music/"+artist+"/"+sub+"/"+song
+                                file = open(fileLocation, "rb")
+                                client.sendall(b"Length: " +str(os.stat(fileLocation).st_size).encode()+b'\r\n\r\n')
+                                current = client.recv(1)
+                                while  current != b'A':
+                                    current = client.recv(1)
+                                client.sendall(file.read(os.stat(fileLocation).st_size))
+                                number += 1
 
             else:
                 client.sendall(b"You are missing essential information for this key\r\n\r\n")
+        elif message[0:1] == "0":
+            client.close()
+
 
 def reciveUntilEnd(socket):
     count = 0
